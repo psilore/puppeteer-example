@@ -10,7 +10,12 @@ describe("App.js", () => {
   });
 
   it("contains the welcome text", async () => {
-    await page.goto("http://localhost:3000");
+    let response = await page.goto("http://localhost:3000");
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     await page.waitForSelector(".App-welcome-text");
     const text = await page.$eval(".App-welcome-text", (e) => e.textContent);
     expect(text).toContain("Edit src/App.js and save to reload.");
